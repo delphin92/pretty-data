@@ -112,6 +112,9 @@ pp.prototype.xml = function(text) {
 			// <elm/> //
 			if(ar[ix].search(/\/>/) > -1 ) { 
 				str = !inComment ? str += this.shift[deep]+ar[ix] : str += ar[ix];
+				if( ar[ix].search(/xmlns\:/) > -1  || ar[ix].search(/xmlns\=/) > -1) {
+					deep--;
+				}
 			} else 
 			// <? xml ... ?> //
 			if(ar[ix].search(/<\?/) > -1) { 
