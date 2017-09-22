@@ -66,7 +66,7 @@ function pp() {
 pp.prototype.xml = function(text) {
 
 	var ar = text.replace(/>\s{0,}</g,"><")
-				 .replace(/</g,"~::~<")
+				 .replace(/></g,">~::~<")
 				 .replace(/xmlns\:/g,"~::~xmlns:")
 				 .replace(/xmlns\=/g,"~::~xmlns=")
 				 .split('~::~'),
@@ -106,8 +106,9 @@ pp.prototype.xml = function(text) {
 				str = !inComment ? str += this.shift[deep]+ar[ix] : str += ar[ix];
 			} else 
 			// </elm> //
-			if(ar[ix].search(/<\//) > -1) { 
-				str = !inComment ? str += this.shift[--deep]+ar[ix] : str += ar[ix];
+			if(ar[ix].search(/<\//) > -1) {
+				var shift = (ar[ix].search(/xmlns\:/) > -1  || ar[ix].search(/xmlns\=/) > -1) ? deep-- : --deep;
+				str = !inComment ? str += this.shift[shift]+ar[ix] : str += ar[ix];
 			} else 
 			// <elm/> //
 			if(ar[ix].search(/\/>/) > -1 ) { 
